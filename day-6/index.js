@@ -2,11 +2,11 @@
 // https://adventofcode.com/2022/day/6/input
 let input = document.querySelector("pre").innerText.split("");
 
-const getPart1 = () => {
+const getSequenceLength = (signalLength) => {
   let sequence = [],
     counter = 0;
   while (counter < input.length) {
-    if (counter <= 2) {
+    if (counter <= signalLength - 2) {
       sequence = [...sequence, input[counter]];
       counter++;
     } else if (
@@ -25,28 +25,5 @@ const getPart1 = () => {
   return counter + 1;
 };
 
-const getPart2 = () => {
-  let sequence = [],
-    counter = 0;
-  while (counter < input.length) {
-    if (counter <= 12) {
-      sequence = [...sequence, input[counter]];
-      counter++;
-    } else if (
-      sequence.includes(input[counter]) ||
-      sequence.filter((c, index) => {
-        return sequence.indexOf(c) === index;
-      }).length !== sequence.length
-    ) {
-      sequence.shift();
-      sequence = [...sequence, input[counter]];
-      counter++;
-    } else {
-      break;
-    }
-  }
-  return counter + 1;
-};
-
-const part1 = getPart1();
-const part2 = getPart2();
+const part1 = getSequenceLength(4);
+const part2 = getSequenceLength(14);

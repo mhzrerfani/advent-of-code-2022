@@ -7,13 +7,28 @@ const input = document
   .map((exc) => exc.split(" "));
 
 const neededCycles = [20, 60, 100, 140, 180, 220];
+const rowsLastCycle = [40, 80, 120, 160, 200, 240];
 let cycle = 1;
 let x = 1;
+let crtRowIndex = 0;
 let signalStr = 0;
+let rowPixels = [];
+let allPixels = [];
 
-const calcSignalStr = () => {
+const processSignal = () => {
+  crtRowIndex++;
+
+  if (cycle % 40 === 1 || cycle === 1) {
+    crtRowIndex = 0;
+  }
+
   if (neededCycles.includes(cycle)) {
     signalStr = cycle * x;
+  }
+  rowPixels += crtRowIndex >= x - 1 && crtRowIndex <= x + 1 ? "#" : ".";
+  if (rowsLastCycle.includes(cycle)) {
+    allPixels = [...allPixels, rowPixels];
+    rowPixels = [];
   }
 };
 
@@ -23,16 +38,16 @@ const part1 = input.reduce((sum, line) => {
 
   if (type === "addx") {
     cycle++;
-    calcSignalStr();
+    processSignal();
     cycle++;
     x += Number(amount);
-    calcSignalStr();
+    processSignal();
   } else if (type === "noop") {
     cycle++;
-    calcSignalStr();
+    processSignal();
   }
 
   return sum + signalStr;
 }, 0);
 
-console.log(part1);
+const part2 = allPixels;

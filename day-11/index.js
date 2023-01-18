@@ -25,16 +25,22 @@ const input = document
     };
   });
 
-const getPart1 = () => {
+const calcMonkeyBusiness = (rounds, divideWorry) => {
   const monkeys = [...input];
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= rounds; i++) {
     monkeys.forEach((monkey) => {
       while (monkey.items.length >= 1) {
+        monkey.items[0] %= monkeys.reduce(
+          (tmp, monkey) => tmp * monkey.test,
+          1
+        );
         const operation = monkey.operation
           .map((n) => (n === "old" ? monkey.items[0] : n))
           .join("");
 
-        monkey.items[0] = Math.trunc(eval(operation) / 3);
+        monkey.items[0] = divideWorry
+          ? Math.trunc(eval(operation) / 3)
+          : Math.trunc(eval(operation));
 
         monkey.items[0] % monkey.test === 0
           ? monkeys[monkey.nextMonkey[0]].items.push(monkey.items.shift())
@@ -47,10 +53,9 @@ const getPart1 = () => {
   const inspectTimes = monkeys
     .map((monkey) => monkey.inspect)
     .sort((a, b) => b - a);
-  console.log(inspectTimes);
 
   return inspectTimes[0] * inspectTimes[1];
 };
 
-const part1 = getPart1();
-console.log(part1);
+const part1 = calcMonkeyBusiness(20, true);
+const part2 = calcMonkeyBusiness(10000, false);

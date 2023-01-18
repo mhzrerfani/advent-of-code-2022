@@ -27,13 +27,12 @@ const input = document
 
 const calcMonkeyBusiness = (rounds, divideWorry) => {
   const monkeys = [...input];
+  const monkeysTestLCD = monkeys.reduce((tmp, monkey) => tmp * monkey.test, 1);
+
   for (let i = 1; i <= rounds; i++) {
     monkeys.forEach((monkey) => {
       while (monkey.items.length >= 1) {
-        monkey.items[0] %= monkeys.reduce(
-          (tmp, monkey) => tmp * monkey.test,
-          1
-        );
+        monkey.items[0] %= monkeysTestLCD;
         const operation = monkey.operation
           .map((n) => (n === "old" ? monkey.items[0] : n))
           .join("");
